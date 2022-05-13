@@ -13,7 +13,6 @@ const gravity = 15
 var velocity = Vector2(0,-1)
 var jumps = 0
 var jumpsMax = 2
-var suelo = true
 var jumpDouble = -300
 #implementacion de animaciones
 onready var animationPlayer = get_node("AnimationPlayer")
@@ -27,7 +26,6 @@ func _physics_process(delta):
 	velocity.y += gravity
 	#idle
 func move():
-	var friction = false
 	if Input.is_action_pressed("ui_right"):
 		
 		$SpritePJ.flip_h = false
@@ -39,35 +37,27 @@ func move():
 		velocity.x = max(velocity.x - moveSpeed, -maxSpeed)
 		
 	else:
-		friction = true
 		velocity.x = 0
-	if velocity.x == 0:
-		$SpritePJ.animation = "Idle"
-	elif velocity.x > 0 or velocity.x < 0:
-		$SpritePJ.animation = "Run"
+	if velocity.x == 0 and jumps == 0:
+		$SpritePJ.play("Idle")
+	elif velocity.x > 0 or velocity.x < 0 and jumps == 0:
+		$SpritePJ.play("Run")
 		
 	#si esta en el piso puede saltar(tambien doble salto)
 	
 func jump():
-	var friction = false
 	if is_on_floor():
 		jumps = 0
-		suelo = true
-	if Input.is_action_just_pressed("ui_up") && jumps < jumpsMax:
-			suelo = false
-			if jumps == 0:
-				$SpritePJ.animation = "Jumping"
-				velocity.y = +jumpHeight
-				jumps += 1
-			elif jumps == 1:
-				$SpritePJ.animation = "DobleJump"
-				velocity.y = jumpDouble
-				jumps += 1
-	if friction == true:
-			velocity.x = lerp(velocity.x,0,0.5)
+	if Input.is_action_just_pressed("ui_up") and jumps == 0:
+		velocity.y = +jumpHeight
+		jumps += 1
+		$SpritePJ.play("Jumping")
 	else:
-		if friction == true:
-			velocity.x = lerp(velocity.x,0,0.01)
+		if Input.is_action_just_pressed("ui_up") and jumps == 1:
+			velocity.y = +jumpDouble
+			jumps += 1
+			$SpritePJ.play("DobleJump")
+	pass
 
 
 
