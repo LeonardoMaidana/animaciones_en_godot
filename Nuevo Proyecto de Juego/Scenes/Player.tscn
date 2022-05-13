@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/quieto.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Sprites/caminar2.png" type="Texture" id=7]
 [ext_resource path="res://Sprites/caminar1.png" type="Texture" id=8]
 [ext_resource path="res://Sprites/salto_comun.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/danio.png" type="Texture" id=10]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -20,6 +21,11 @@ animations = [ {
 "frames": [ ExtResource( 8 ), ExtResource( 7 ) ],
 "loop": true,
 "name": "Run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 10 ) ],
+"loop": true,
+"name": "danio",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 3 ) ],
@@ -41,7 +47,7 @@ script = ExtResource( 1 )
 
 [node name="SpritePJ" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
-animation = "Idle"
+animation = "danio"
 
 [node name="CollitionPJ" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

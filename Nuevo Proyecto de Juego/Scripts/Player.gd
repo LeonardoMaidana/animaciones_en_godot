@@ -27,24 +27,20 @@ func _physics_process(delta):
 	#idle
 func move():
 	if Input.is_action_pressed("ui_right"):
-		
 		$SpritePJ.flip_h = false
 		velocity.x = min(velocity.x + moveSpeed, maxSpeed)
-		
 	elif Input.is_action_pressed("ui_left"):
-		
 		$SpritePJ.flip_h = true
 		velocity.x = max(velocity.x - moveSpeed, -maxSpeed)
-		
 	else:
 		velocity.x = 0
 	if velocity.x == 0 and jumps == 0:
 		$SpritePJ.play("Idle")
+	if Input.is_action_pressed("ui_down"):
+		$SpritePJ.play("danio")
 	elif velocity.x > 0 or velocity.x < 0 and jumps == 0:
 		$SpritePJ.play("Run")
-		
-	#si esta en el piso puede saltar(tambien doble salto)
-	
+	pass
 func jump():
 	if is_on_floor():
 		jumps = 0
