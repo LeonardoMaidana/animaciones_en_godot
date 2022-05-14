@@ -4,7 +4,7 @@ extends KinematicBody2D
 const moveSpeed = 120
 const maxSpeed = 140
 
-const jumpHeight = -400
+const jumpHeight = -500
 const limitJump = -800
 const up = Vector2(0,-1)
 const gravity = 15
@@ -13,24 +13,24 @@ const gravity = 15
 var velocity = Vector2(0,-1)
 var jumps = 0
 var jumpsMax = 2
-var jumpDouble = -300
-#implementacion de animaciones
-onready var animationPlayer = get_node("AnimationPlayer")
+var jumpDouble = -400
 
 
 func _physics_process(delta):
-	#gravedad y friccion
 	move()
 	jump()
 	velocity = move_and_slide(velocity, Vector2(0,-1))
 	velocity.y += gravity
-	#idle
 func move():
 	if Input.is_action_pressed("ui_right"):
-		$SpritePJ.flip_h = false
+		if jumps == 0:
+			$SpritePJ.play("Run")
+			$SpritePJ.flip_h = false
 		velocity.x = min(velocity.x + moveSpeed, maxSpeed)
 	elif Input.is_action_pressed("ui_left"):
-		$SpritePJ.flip_h = true
+		if jumps == 0:
+			$SpritePJ.play("Run")
+			$SpritePJ.flip_h = true
 		velocity.x = max(velocity.x - moveSpeed, -maxSpeed)
 	else:
 		velocity.x = 0
@@ -38,8 +38,8 @@ func move():
 		$SpritePJ.play("Idle")
 	if Input.is_action_pressed("ui_down"):
 		$SpritePJ.play("danio")
-	elif velocity.x > 0 or velocity.x < 0 and jumps == 0:
-		$SpritePJ.play("Run")
+	if Input.is_action_just_released("ui_right") and Input.is_action_just_released("ui_left") and Input.is_action_just_released("ui_down"):
+		velocity.x = 0
 	pass
 func jump():
 	if is_on_floor():
